@@ -20,7 +20,7 @@
 <img src="https://img.shields.io/badge/Recovery-Automatic_Failover-7DA0C4?style=flat-square&labelColor=5A6C7D" />
 <img src="https://img.shields.io/badge/Diagnostics-Event_FIFO_%2B_IRQ-7DA0C4?style=flat-square&labelColor=5A6C7D" />
 
-<br><br>
+<br>
 
 <img src="./docs/rs422_hardware.png" alt="Basys 3와 STM32 보드 및 이중 RS-422 통신 구성" width="800" />
 
