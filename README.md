@@ -1,8 +1,8 @@
 <div align="center">
 
-# Project04_RS422Failover
+# 📡 Basys 3 고신뢰성 이중화 통신 : RS-422 기반 채널 자동 절체 시스템
 
-### Basys 3 : MicroBlaze V & AXI-Based Dual-Channel RS-422 Failover SoC
+### RS-422-Based Automatic Channel Failover System
 
 <br>
 
