@@ -1,34 +1,201 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="499" viewBox="0 0 1280 499">
-<rect width="100%" height="100%" fill="#101b2b"/>
-<style>text{font-family:monospace;fill:#dce6f1;font-size:13px}.title{font-family:sans-serif;font-size:20px;font-weight:bold}</style>
-<text x="24" y="30" class="title">03 / A CRC error : wait for pair timeout, then select channel B</text>
-<text x="24" y="52">XSim VCD | accelerated testbench | time : ns | buses : hex</text>
-<path d="M230.0,76 V463" stroke="#293b50"/>
-<text x="230.0" y="485" text-anchor="middle">75715</text>
-<path d="M430.0,76 V463" stroke="#293b50"/>
-<text x="430.0" y="485" text-anchor="middle">75935</text>
-<path d="M630.0,76 V463" stroke="#293b50"/>
-<text x="630.0" y="485" text-anchor="middle">76155</text>
-<path d="M830.0,76 V463" stroke="#293b50"/>
-<text x="830.0" y="485" text-anchor="middle">76375</text>
-<path d="M1030.0,76 V463" stroke="#293b50"/>
-<text x="1030.0" y="485" text-anchor="middle">76595</text>
-<path d="M1230.0,76 V463" stroke="#293b50"/>
-<text x="1230.0" y="485" text-anchor="middle">76815</text>
-<text x="16" y="96">a_crc_error</text>
-<path d="M230.00,103H475.45V79H484.55V103H1230.00V103" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="144">b_crc_ok</text>
-<path d="M230.00,151H475.45V127H484.55V151H1230.00V151" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="192">pair_wait_active</text>
-<path d="M230.00,199H502.73V175H948.18V199H1230.00V199" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="240">decision_valid</text>
-<path d="M230.00,247H957.27V223H966.36V247H1230.00V247" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="288">decision_degraded</text>
-<path d="M230.00,295H957.27V271H966.36V295H1230.00V295" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="336">decision_selected_b</text>
-<path d="M230.00,343H957.27V319H966.36V343H1230.00V343" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="384">duplicate_out_valid</text>
-<path d="M230.00,391H966.36V367H975.45V391H1230.00V391" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="432">rs422_tx_out</text>
-<path d="M230.00,415H1057.27V439H1148.18V415H1230.00V415" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="779" viewBox="0 0 1400 779">
+<rect width="100%" height="100%" fill="#0b1220"/>
+<style>text{font-family:"DejaVu Sans Mono",monospace;fill:#dce6f1;font-size:15px}.title,.note,.sub{font-family:"Noto Sans CJK KR",sans-serif}.title{font-size:25px;font-weight:bold}.note{fill:#ffe28a;font-size:16px}.sub{font-size:16px;fill:#b9c7d8}</style>
+<text x="34" y="43" class="title">RS422 Failover : CRC 오류와 B 채널 Fallback — XSim 실측 파형</text>
+<text x="34" y="75" class="sub">tb_redundant_link_core · 75,715~76,815 ns · 실제 core.vcd 신호 · UART 10 clocks/bit 가속 설정</text>
+<rect x="20" y="100" width="1360" height="634" rx="14" fill="#121e30" stroke="#334155" stroke-width="2"/>
+<text x="62" y="137" class="sub">시간 [ns] · 버스 : hex</text>
+<path d="M290.0,150 V569" stroke="#33455e"/>
+<text x="290.0" y="137" text-anchor="middle">75715</text>
+<path d="M338.6363636363636,150 V569" stroke="#1c2a3d"/>
+<path d="M387.27272727272725,150 V569" stroke="#1c2a3d"/>
+<path d="M435.9090909090909,150 V569" stroke="#1c2a3d"/>
+<path d="M484.54545454545456,150 V569" stroke="#1c2a3d"/>
+<path d="M533.1818181818182,150 V569" stroke="#33455e"/>
+<text x="533.1818181818182" y="137" text-anchor="middle">75965</text>
+<path d="M581.8181818181818,150 V569" stroke="#1c2a3d"/>
+<path d="M630.4545454545455,150 V569" stroke="#1c2a3d"/>
+<path d="M679.0909090909091,150 V569" stroke="#1c2a3d"/>
+<path d="M727.7272727272727,150 V569" stroke="#1c2a3d"/>
+<path d="M776.3636363636364,150 V569" stroke="#33455e"/>
+<text x="776.3636363636364" y="137" text-anchor="middle">76215</text>
+<path d="M825.0,150 V569" stroke="#1c2a3d"/>
+<path d="M873.6363636363636,150 V569" stroke="#1c2a3d"/>
+<path d="M922.2727272727273,150 V569" stroke="#1c2a3d"/>
+<path d="M970.9090909090909,150 V569" stroke="#1c2a3d"/>
+<path d="M1019.5454545454545,150 V569" stroke="#33455e"/>
+<text x="1019.5454545454545" y="137" text-anchor="middle">76465</text>
+<path d="M1068.1818181818182,150 V569" stroke="#1c2a3d"/>
+<path d="M1116.8181818181818,150 V569" stroke="#1c2a3d"/>
+<path d="M1165.4545454545455,150 V569" stroke="#1c2a3d"/>
+<path d="M1214.090909090909,150 V569" stroke="#1c2a3d"/>
+<path d="M1262.7272727272727,150 V569" stroke="#33455e"/>
+<text x="1262.7272727272727" y="137" text-anchor="middle">76715</text>
+<path d="M1311.3636363636365,150 V569" stroke="#1c2a3d"/>
+<path d="M1360.0,150 V569" stroke="#1c2a3d"/>
+<path d="M33,151 V185" stroke="#24bdf3" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="173">clk</text>
+<rect x="290.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="299.72727272727275" y="156" width="4.863636363636317" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="309.45454545454544" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="319.1818181818182" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="328.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="338.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="348.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="358.09090909090907" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="367.8181818181818" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="377.54545454545456" y="156" width="4.863636363636317" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="387.27272727272725" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="397.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="406.72727272727275" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="416.45454545454544" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="426.18181818181813" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="435.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="445.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="455.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="465.0909090909091" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="474.8181818181818" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="484.54545454545456" y="156" width="4.863636363636317" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="494.27272727272725" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="504.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="513.7272727272727" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="523.4545454545455" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="533.1818181818182" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="542.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="552.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="562.3636363636363" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="572.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="581.8181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="591.5454545454545" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="601.2727272727273" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="611.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="620.7272727272727" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="630.4545454545455" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="640.1818181818182" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="649.909090909091" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="659.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="669.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="679.0909090909091" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="688.8181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="698.5454545454545" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="708.2727272727273" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="718.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="727.7272727272727" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="737.4545454545455" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="747.1818181818181" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="756.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="766.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="776.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="786.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="795.8181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="805.5454545454545" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="815.2727272727273" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="825.0" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="834.7272727272726" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="844.4545454545455" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="854.1818181818181" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="863.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="873.6363636363636" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="883.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="893.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="902.8181818181819" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="912.5454545454545" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="922.2727272727273" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="932.0" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="941.7272727272727" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="951.4545454545454" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="961.1818181818182" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="970.9090909090909" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="980.6363636363637" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="990.3636363636364" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1000.0909090909091" y="156" width="4.863636363636374" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1009.8181818181819" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1019.5454545454545" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1029.2727272727273" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1039.0" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1048.7272727272727" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1058.4545454545455" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1068.1818181818182" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1077.909090909091" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1087.6363636363635" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1097.3636363636365" y="156" width="4.863636363636033" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1107.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1116.8181818181818" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1126.5454545454545" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1136.2727272727273" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1146.0" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1155.7272727272727" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1165.4545454545455" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1175.181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1184.909090909091" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1194.6363636363635" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1204.3636363636363" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1214.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1223.8181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1233.5454545454545" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1243.2727272727273" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1253.0" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1262.7272727272727" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1272.4545454545455" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1282.181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1291.909090909091" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1301.6363636363635" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1311.3636363636365" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1321.090909090909" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1330.8181818181818" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1340.5454545454545" y="156" width="4.86363636363626" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1350.2727272727273" y="156" width="4.863636363636488" height="24" fill="#24bdf3" opacity="0.13"/>
+<path d="M290.00,156H294.86V180H299.73V156H304.59V180H309.45V156H314.32V180H319.18V156H324.05V180H328.91V156H333.77V180H338.64V156H343.50V180H348.36V156H353.23V180H358.09V156H362.95V180H367.82V156H372.68V180H377.55V156H382.41V180H387.27V156H392.14V180H397.00V156H401.86V180H406.73V156H411.59V180H416.45V156H421.32V180H426.18V156H431.05V180H435.91V156H440.77V180H445.64V156H450.50V180H455.36V156H460.23V180H465.09V156H469.95V180H474.82V156H479.68V180H484.55V156H489.41V180H494.27V156H499.14V180H504.00V156H508.86V180H513.73V156H518.59V180H523.45V156H528.32V180H533.18V156H538.05V180H542.91V156H547.77V180H552.64V156H557.50V180H562.36V156H567.23V180H572.09V156H576.95V180H581.82V156H586.68V180H591.55V156H596.41V180H601.27V156H606.14V180H611.00V156H615.86V180H620.73V156H625.59V180H630.45V156H635.32V180H640.18V156H645.05V180H649.91V156H654.77V180H659.64V156H664.50V180H669.36V156H674.23V180H679.09V156H683.95V180H688.82V156H693.68V180H698.55V156H703.41V180H708.27V156H713.14V180H718.00V156H722.86V180H727.73V156H732.59V180H737.45V156H742.32V180H747.18V156H752.05V180H756.91V156H761.77V180H766.64V156H771.50V180H776.36V156H781.23V180H786.09V156H790.95V180H795.82V156H800.68V180H805.55V156H810.41V180H815.27V156H820.14V180H825.00V156H829.86V180H834.73V156H839.59V180H844.45V156H849.32V180H854.18V156H859.05V180H863.91V156H868.77V180H873.64V156H878.50V180H883.36V156H888.23V180H893.09V156H897.95V180H902.82V156H907.68V180H912.55V156H917.41V180H922.27V156H927.14V180H932.00V156H936.86V180H941.73V156H946.59V180H951.45V156H956.32V180H961.18V156H966.05V180H970.91V156H975.77V180H980.64V156H985.50V180H990.36V156H995.23V180H1000.09V156H1004.95V180H1009.82V156H1014.68V180H1019.55V156H1024.41V180H1029.27V156H1034.14V180H1039.00V156H1043.86V180H1048.73V156H1053.59V180H1058.45V156H1063.32V180H1068.18V156H1073.05V180H1077.91V156H1082.77V180H1087.64V156H1092.50V180H1097.36V156H1102.23V180H1107.09V156H1111.95V180H1116.82V156H1121.68V180H1126.55V156H1131.41V180H1136.27V156H1141.14V180H1146.00V156H1150.86V180H1155.73V156H1160.59V180H1165.45V156H1170.32V180H1175.18V156H1180.05V180H1184.91V156H1189.77V180H1194.64V156H1199.50V180H1204.36V156H1209.23V180H1214.09V156H1218.95V180H1223.82V156H1228.68V180H1233.55V156H1238.41V180H1243.27V156H1248.14V180H1253.00V156H1257.86V180H1262.73V156H1267.59V180H1272.45V156H1277.32V180H1282.18V156H1287.05V180H1291.91V156H1296.77V180H1301.64V156H1306.50V180H1311.36V156H1316.23V180H1321.09V156H1325.95V180H1330.82V156H1335.68V180H1340.55V156H1345.41V180H1350.27V156H1355.14V180H1360.00V156" fill="none" stroke="#24bdf3" stroke-width="2"/>
+<path d="M33,197 V231" stroke="#ffad18" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="219">a_crc_error</text>
+<rect x="552.6363636363636" y="202" width="9.727272727272634" height="24" fill="#ffad18" opacity="0.13"/>
+<path d="M290.00,226H552.64V202H562.36V226H1360.00V226" fill="none" stroke="#ffad18" stroke-width="2"/>
+<path d="M33,243 V277" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="265">b_crc_ok</text>
+<rect x="552.6363636363636" y="248" width="9.727272727272634" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,272H552.64V248H562.36V272H1360.00V272" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,289 V323" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="311">pair_wait_active</text>
+<rect x="581.8181818181818" y="294" width="476.63636363636374" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,318H581.82V294H1058.45V318H1360.00V318" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,335 V369" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="357">decision_valid</text>
+<rect x="1068.1818181818182" y="340" width="9.727272727272748" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,364H1068.18V340H1077.91V364H1360.00V364" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,381 V415" stroke="#ffad18" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="403">decision_degraded</text>
+<rect x="1068.1818181818182" y="386" width="9.727272727272748" height="24" fill="#ffad18" opacity="0.13"/>
+<path d="M290.00,410H1068.18V386H1077.91V410H1360.00V410" fill="none" stroke="#ffad18" stroke-width="2"/>
+<path d="M33,427 V461" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="449">decision_selected_b</text>
+<rect x="1068.1818181818182" y="432" width="9.727272727272748" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,456H1068.18V432H1077.91V456H1360.00V456" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,473 V507" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="495">duplicate_out_valid</text>
+<rect x="1077.909090909091" y="478" width="9.72727272727252" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,502H1077.91V478H1087.64V502H1360.00V502" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,519 V553" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="541">rs422_tx_out</text>
+<rect x="290.0" y="524" width="885.181818181818" height="24" fill="#00cc66" opacity="0.13"/>
+<rect x="1272.4545454545455" y="524" width="87.5454545454545" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,524H1175.18V548H1272.45V524H1360.00V524" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M552.6363636363636,150 V581 L265.0,604" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="552.6363636363636" cy="581" r="4" fill="#ffad18"/>
+<rect x="60" y="604" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="74" y="629" class="note">① A 오류 / B 정상</text>
+<text x="74" y="653" class="note">A CRC error @75,985 ns</text>
+<text x="74" y="677" class="note">손상된 A 프레임은 전달하지 않음</text>
+<path d="M1068.1818181818182,150 V581 L705.0,604" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="1068.1818181818182" cy="581" r="4" fill="#ffad18"/>
+<rect x="500" y="604" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="514" y="629" class="note">② Pair 대기 후 B 채택</text>
+<text x="514" y="653" class="note">selected_b=1 @76,515 ns</text>
+<text x="514" y="677" class="note">degraded=1 · 정상 경로로 전달</text>
+<path d="M1175.181818181818,150 V581 L1145.0,604" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="1175.181818181818" cy="581" r="4" fill="#ffad18"/>
+<rect x="940" y="604" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="954" y="629" class="note">③ B 데이터 출력</text>
+<text x="954" y="653" class="note">payload=BE EF · CRC=57 9A</text>
+<text x="954" y="677" class="note">출력 바이트 전체를 자동 비교</text>
+<text x="34" y="761" class="sub">청록 : 클럭 · 초록 : 유효/전달 · 주황 : 오류/차단/진단 · 보라 : 버스 · 점선 : 실제 이벤트 시각</text>
 </svg>

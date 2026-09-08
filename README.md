@@ -44,9 +44,6 @@
 4. [주요 기능](#4-주요-기능)
 5. [시스템 구성](#5-시스템-구성)
 6. [아키텍처](#6-아키텍처)
-   - [MicroBlaze SoC Block Design](#6-1-microblaze-soc-block-design)
-   - [통신 코어 데이터 경로](#6-2-통신-코어-데이터-경로)
-   - [이벤트 관리 경로](#6-3-이벤트-관리-경로)
 7. [프레임과 이벤트 데이터](#7-프레임과-이벤트-데이터)
 8. [AXI4-Lite 인터페이스](#8-axi4-lite-인터페이스)
 9. [핀맵과 상태 표시](#9-핀맵과-상태-표시)
@@ -55,11 +52,6 @@
 12. [핵심 설계 포인트](#12-핵심-설계-포인트)
 13. [Troubleshooting](#13-troubleshooting)
 14. [검증 및 성능 분석](#14-검증-및-성능-분석)
-    - [Self-checking RTL simulation](#14-1-self-checking-rtl-simulation)
-    - [주요 시뮬레이션 파형](#14-1-1-주요-시뮬레이션-파형)
-    - [Timing·자원·성능 분석](#14-2-timing자원성능-분석)
-    - [정적·구조 검증](#14-3-정적구조-검증)
-    - [생성 산출물과 재현 방법](#14-4-생성-산출물과-재현-방법)
 15. [빌드와 소프트웨어 연동](#15-빌드와-소프트웨어-연동)
 
 <br>
@@ -161,6 +153,12 @@ flowchart LR
 ## 6. 아키텍처
 
 ### 6-1. MicroBlaze SoC Block Design
+
+아래 이미지는 프로젝트의 `system_bd.bd`를 **Vivado IP Integrator에서 직접 내보낸 실제 Block Design**입니다. 이미지를 클릭하면 원본 크기로 확대할 수 있습니다.
+
+[![Vivado MicroBlaze V SoC 실제 Block Design](./docs/system_bd.png)](./docs/system_bd.png)
+
+왼쪽의 Clock Wizard·Processor System Reset이 공통 클럭과 리셋을 공급하고, 가운데 MicroBlaze V가 SmartConnect를 통해 오른쪽의 통신 코어와 AXI UARTLite에 접근합니다. AXI Interrupt Controller는 코어의 IRQ를 CPU에 전달하며, System ILA는 AXI 신호를 관측합니다. 아래 논리 구성도는 같은 연결을 기능 중심으로 풀어 쓴 것입니다.
 
 ```mermaid
 flowchart TB

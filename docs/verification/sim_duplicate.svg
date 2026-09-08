@@ -1,33 +1,146 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="451" viewBox="0 0 1280 451">
-<rect width="100%" height="100%" fill="#101b2b"/>
-<style>text{font-family:monospace;fill:#dce6f1;font-size:13px}.title{font-family:sans-serif;font-size:20px;font-weight:bold}</style>
-<text x="24" y="30" class="title">04 / Late duplicate : drop previously forwarded ID + sequence</text>
-<text x="24" y="52">XSim VCD | accelerated testbench | time : ns | buses : hex</text>
-<path d="M230.0,76 V415" stroke="#293b50"/>
-<text x="230.0" y="437" text-anchor="middle">64305</text>
-<path d="M430.0,76 V415" stroke="#293b50"/>
-<text x="430.0" y="437" text-anchor="middle">64385</text>
-<path d="M630.0,76 V415" stroke="#293b50"/>
-<text x="630.0" y="437" text-anchor="middle">64465</text>
-<path d="M830.0,76 V415" stroke="#293b50"/>
-<text x="830.0" y="437" text-anchor="middle">64545</text>
-<path d="M1030.0,76 V415" stroke="#293b50"/>
-<text x="1030.0" y="437" text-anchor="middle">64625</text>
-<path d="M1230.0,76 V415" stroke="#293b50"/>
-<text x="1230.0" y="437" text-anchor="middle">64705</text>
-<text x="16" y="96">decision_valid</text>
-<path d="M230.00,103H455.00V79H480.00V103H1230.00V103" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="144">decision_accept</text>
-<path d="M230.00,151H455.00V127H480.00V151H1230.00V151" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="192">decision_sequence</text>
-<path d="M230.0,187 L232.0,175 H1228.0 L1230.0,187 L1228.0,199 H232.0 Z" fill="#20344c" stroke="#8bb7e6"/>
-<text x="730.0" y="192" text-anchor="middle">12</text>
-<text x="16" y="240">duplicate_drop</text>
-<path d="M230.00,247H480.00V223H505.00V247H1230.00V247" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="288">duplicate_out_valid</text>
-<path d="M230.00,295H1230.00V295" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="336">raw_tx_valid</text>
-<path d="M230.00,343H1230.00V343" fill="none" stroke="#7bd9ca" stroke-width="2"/>
-<text x="16" y="384">rs422_tx_out</text>
-<path d="M230.00,367H1230.00V367" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="733" viewBox="0 0 1400 733">
+<rect width="100%" height="100%" fill="#0b1220"/>
+<style>text{font-family:"DejaVu Sans Mono",monospace;fill:#dce6f1;font-size:15px}.title,.note,.sub{font-family:"Noto Sans CJK KR",sans-serif}.title{font-size:25px;font-weight:bold}.note{fill:#ffe28a;font-size:16px}.sub{font-size:16px;fill:#b9c7d8}</style>
+<text x="34" y="43" class="title">RS422 Failover : 지연 중복 프레임 차단 — XSim 실측 파형</text>
+<text x="34" y="75" class="sub">tb_redundant_link_core · 64,305~64,705 ns · 실제 core.vcd 신호 · UART 10 clocks/bit 가속 설정</text>
+<rect x="20" y="100" width="1360" height="588" rx="14" fill="#121e30" stroke="#334155" stroke-width="2"/>
+<text x="62" y="137" class="sub">시간 [ns] · 버스 : hex</text>
+<path d="M290.0,150 V523" stroke="#33455e"/>
+<text x="290.0" y="137" text-anchor="middle">64305</text>
+<path d="M316.75,150 V523" stroke="#1c2a3d"/>
+<path d="M343.5,150 V523" stroke="#1c2a3d"/>
+<path d="M370.25,150 V523" stroke="#1c2a3d"/>
+<path d="M397.0,150 V523" stroke="#1c2a3d"/>
+<path d="M423.75,150 V523" stroke="#33455e"/>
+<text x="423.75" y="137" text-anchor="middle">64355</text>
+<path d="M450.5,150 V523" stroke="#1c2a3d"/>
+<path d="M477.25,150 V523" stroke="#1c2a3d"/>
+<path d="M504.0,150 V523" stroke="#1c2a3d"/>
+<path d="M530.75,150 V523" stroke="#1c2a3d"/>
+<path d="M557.5,150 V523" stroke="#33455e"/>
+<text x="557.5" y="137" text-anchor="middle">64405</text>
+<path d="M584.25,150 V523" stroke="#1c2a3d"/>
+<path d="M611.0,150 V523" stroke="#1c2a3d"/>
+<path d="M637.75,150 V523" stroke="#1c2a3d"/>
+<path d="M664.5,150 V523" stroke="#1c2a3d"/>
+<path d="M691.25,150 V523" stroke="#33455e"/>
+<text x="691.25" y="137" text-anchor="middle">64455</text>
+<path d="M718.0,150 V523" stroke="#1c2a3d"/>
+<path d="M744.75,150 V523" stroke="#1c2a3d"/>
+<path d="M771.5,150 V523" stroke="#1c2a3d"/>
+<path d="M798.25,150 V523" stroke="#1c2a3d"/>
+<path d="M825.0,150 V523" stroke="#33455e"/>
+<text x="825.0" y="137" text-anchor="middle">64505</text>
+<path d="M851.75,150 V523" stroke="#1c2a3d"/>
+<path d="M878.5,150 V523" stroke="#1c2a3d"/>
+<path d="M905.25,150 V523" stroke="#1c2a3d"/>
+<path d="M932.0,150 V523" stroke="#1c2a3d"/>
+<path d="M958.75,150 V523" stroke="#33455e"/>
+<text x="958.75" y="137" text-anchor="middle">64555</text>
+<path d="M985.5,150 V523" stroke="#1c2a3d"/>
+<path d="M1012.25,150 V523" stroke="#1c2a3d"/>
+<path d="M1039.0,150 V523" stroke="#1c2a3d"/>
+<path d="M1065.75,150 V523" stroke="#1c2a3d"/>
+<path d="M1092.5,150 V523" stroke="#33455e"/>
+<text x="1092.5" y="137" text-anchor="middle">64605</text>
+<path d="M1119.25,150 V523" stroke="#1c2a3d"/>
+<path d="M1146.0,150 V523" stroke="#1c2a3d"/>
+<path d="M1172.75,150 V523" stroke="#1c2a3d"/>
+<path d="M1199.5,150 V523" stroke="#1c2a3d"/>
+<path d="M1226.25,150 V523" stroke="#33455e"/>
+<text x="1226.25" y="137" text-anchor="middle">64655</text>
+<path d="M1253.0,150 V523" stroke="#1c2a3d"/>
+<path d="M1279.75,150 V523" stroke="#1c2a3d"/>
+<path d="M1306.5,150 V523" stroke="#1c2a3d"/>
+<path d="M1333.25,150 V523" stroke="#1c2a3d"/>
+<path d="M1360.0,150 V523" stroke="#33455e"/>
+<text x="1360.0" y="137" text-anchor="middle">64705</text>
+<path d="M33,151 V185" stroke="#24bdf3" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="173">clk</text>
+<rect x="290.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="316.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="343.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="370.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="397.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="423.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="450.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="477.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="504.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="530.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="557.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="584.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="611.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="637.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="664.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="691.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="718.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="744.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="771.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="798.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="825.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="851.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="878.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="905.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="932.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="958.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="985.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1012.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1039.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1065.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1092.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1119.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1146.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1172.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1199.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1226.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1253.0" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1279.75" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1306.5" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<rect x="1333.25" y="156" width="13.375" height="24" fill="#24bdf3" opacity="0.13"/>
+<path d="M290.00,156H303.38V180H316.75V156H330.12V180H343.50V156H356.88V180H370.25V156H383.62V180H397.00V156H410.38V180H423.75V156H437.12V180H450.50V156H463.88V180H477.25V156H490.62V180H504.00V156H517.38V180H530.75V156H544.12V180H557.50V156H570.88V180H584.25V156H597.62V180H611.00V156H624.38V180H637.75V156H651.12V180H664.50V156H677.88V180H691.25V156H704.62V180H718.00V156H731.38V180H744.75V156H758.12V180H771.50V156H784.88V180H798.25V156H811.62V180H825.00V156H838.38V180H851.75V156H865.12V180H878.50V156H891.88V180H905.25V156H918.62V180H932.00V156H945.38V180H958.75V156H972.12V180H985.50V156H998.88V180H1012.25V156H1025.62V180H1039.00V156H1052.38V180H1065.75V156H1079.12V180H1092.50V156H1105.88V180H1119.25V156H1132.62V180H1146.00V156H1159.38V180H1172.75V156H1186.12V180H1199.50V156H1212.88V180H1226.25V156H1239.62V180H1253.00V156H1266.38V180H1279.75V156H1293.12V180H1306.50V156H1319.88V180H1333.25V156H1346.62V180H1360.00V156" fill="none" stroke="#24bdf3" stroke-width="2"/>
+<path d="M33,197 V231" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="219">decision_valid</text>
+<rect x="530.75" y="202" width="26.75" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,226H530.75V202H557.50V226H1360.00V226" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,243 V277" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="265">decision_accept</text>
+<rect x="530.75" y="248" width="26.75" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,272H530.75V248H557.50V272H1360.00V272" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,289 V323" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="311">decision_sequence</text>
+<path d="M290.0,306 L296.0,292 H1354.0 L1360.0,306 L1354.0,320 H296.0 Z" fill="#211e49" stroke="#aa88ff" stroke-width="1.5"/>
+<text x="825.0" y="311" text-anchor="middle">12</text>
+<path d="M33,335 V369" stroke="#ffad18" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="357">duplicate_drop</text>
+<rect x="557.5" y="340" width="26.75" height="24" fill="#ffad18" opacity="0.13"/>
+<path d="M290.00,364H557.50V340H584.25V364H1360.00V364" fill="none" stroke="#ffad18" stroke-width="2"/>
+<path d="M33,381 V415" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="403">duplicate_out_valid</text>
+<path d="M290.00,410H1360.00V410" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,427 V461" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="449">raw_tx_valid</text>
+<path d="M290.00,456H1360.00V456" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M33,473 V507" stroke="#00cc66" stroke-width="4" stroke-linecap="round"/>
+<text x="60" y="495">rs422_tx_out</text>
+<rect x="290.0" y="478" width="1070.0" height="24" fill="#00cc66" opacity="0.13"/>
+<path d="M290.00,478H1360.00V478" fill="none" stroke="#00cc66" stroke-width="2"/>
+<path d="M530.75,150 V535 L265.0,558" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="530.75" cy="535" r="4" fill="#ffad18"/>
+<rect x="60" y="558" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="74" y="583" class="note">① 늦게 도착한 B 채택</text>
+<text x="74" y="607" class="note">accept=1 @64,395 ns</text>
+<text x="74" y="631" class="note">SEQ=0x12 · 앞서 A로 전달된 명령</text>
+<path d="M557.5,150 V535 L705.0,558" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="557.5" cy="535" r="4" fill="#ffad18"/>
+<rect x="500" y="558" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="514" y="583" class="note">② 이력에서 동일 ID·SEQ 검출</text>
+<text x="514" y="607" class="note">duplicate_drop=1 @64,405 ns</text>
+<text x="514" y="631" class="note">최근 4개 키와 비교하여 중복 제거</text>
+<path d="M584.25,150 V535 L1145.0,558" stroke="#ffad18" stroke-dasharray="6 5" fill="none"/>
+<circle cx="584.25" cy="535" r="4" fill="#ffad18"/>
+<rect x="940" y="558" width="410" height="104" rx="9" fill="#162236" stroke="#ffad18" stroke-width="1.5"/>
+<text x="954" y="583" class="note">③ 추가 전송 없음</text>
+<text x="954" y="607" class="note">duplicate_out_valid=0 유지</text>
+<text x="954" y="631" class="note">TX idle · 동일 명령 이중 실행 방지</text>
+<text x="34" y="715" class="sub">청록 : 클럭 · 초록 : 유효/전달 · 주황 : 오류/차단/진단 · 보라 : 버스 · 점선 : 실제 이벤트 시각</text>
 </svg>
