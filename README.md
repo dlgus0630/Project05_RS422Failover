@@ -154,9 +154,27 @@ flowchart LR
 
 ### 6-1. MicroBlaze SoC Block Design
 
-아래 이미지는 프로젝트의 `system_bd.bd`를 **Vivado IP Integrator에서 직접 내보낸 실제 Block Design**입니다. 이미지를 클릭하면 원본 크기로 확대할 수 있습니다.
+아래 이미지는 프로젝트의 `system_bd.bd`를 **Vivado IP Integrator에서 직접 내보낸 실제 Block Design**입니다. 전체도는 연결 흐름을 보여주고, 이어지는 세 확대도는 IP 이름과 포트 글자를 읽을 수 있도록 같은 원본을 영역별로 나눈 것입니다.
 
 [![Vivado MicroBlaze V SoC 실제 Block Design](./docs/system_bd.png)](./docs/system_bd.png)
+
+**① 클럭·리셋·디버그·인터럽트**
+
+[![Clock Wizard, Reset, MDM 및 AXI Interrupt Controller 확대도](./docs/bd_clock_irq.png)](./docs/bd_clock_irq.png)
+
+`clk_wiz_1`의 100 MHz 클럭과 `locked`가 reset 제어에 연결됩니다. `rst_clk_wiz_1_100M`은 CPU와 주변장치의 reset을 분리해 공급하고, `axi_intc_0`는 통신 코어의 IRQ를 MicroBlaze V의 `INTERRUPT`에 전달합니다.
+
+**② MicroBlaze V·SmartConnect·Local Memory**
+
+[![MicroBlaze V, SmartConnect 및 Local Memory 확대도](./docs/bd_cpu_memory.png)](./docs/bd_cpu_memory.png)
+
+CPU의 `M_AXI_DP`는 SmartConnect의 `S00_AXI`로 연결됩니다. SmartConnect의 세 master 포트는 통신 코어·UARTLite·Interrupt Controller로 분기합니다. `ILMB`·`DLMB`는 instruction/data local memory 접근 경로입니다.
+
+**③ 통신 코어·UARTLite·System ILA**
+
+[![RS-422 통신 코어, UARTLite 및 System ILA 확대도](./docs/bd_peripherals.png)](./docs/bd_peripherals.png)
+
+`redundant_link_core_0`에서 `rs422_rx_a/b`, `rs422_tx_out`, LED·7-Segment 출력과 `irq`를 확인할 수 있습니다. `axi_uartlite_0`는 `usb_uart` 인터페이스를 제공하고, `system_ila_0`는 `SLOT_0_AXI`를 통해 버스를 관측합니다.
 
 왼쪽의 Clock Wizard·Processor System Reset이 공통 클럭과 리셋을 공급하고, 가운데 MicroBlaze V가 SmartConnect를 통해 오른쪽의 통신 코어와 AXI UARTLite에 접근합니다. AXI Interrupt Controller는 코어의 IRQ를 CPU에 전달하며, System ILA는 AXI 신호를 관측합니다. 아래 논리 구성도는 같은 연결을 기능 중심으로 풀어 쓴 것입니다.
 
@@ -480,7 +498,7 @@ Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배�
 
 ### 14-1. Self-checking RTL simulation
 
-2026-09-08 재실행 결과 : **17 / 17 PASS**. Verilog 소스를 컴파일하고 각 테스트벤치를 독립적으로 elaboration·simulation한 뒤, PASS 메시지와 FAIL/ERROR 부재를 함께 검사합니다. [전체 테스트 결과](./docs/verification/simulation_summary.txt)
+재실행 결과 : **17 / 17 PASS**. Verilog 소스를 컴파일하고 각 테스트벤치를 독립적으로 elaboration·simulation한 뒤, PASS 메시지와 FAIL/ERROR 부재를 함께 검사합니다. [전체 테스트 결과](./docs/verification/simulation_summary.txt)
 
 | 검증 그룹 | 테스트벤치 |
 |---|---|
@@ -533,6 +551,14 @@ Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배�
 
 100 MHz 제약을 적용한 코어의 route 완료 후 `Report Utilization` 결과입니다. 얕은 프레임 FIFO와 이벤트 FIFO는 분산 RAM으로 구현되므로, 이 코어의 BRAM 사용량과 CPU용 local memory 사용량은 별개입니다.
 
+[![Vivado 구현 후 Utilization 실제 화면 캡처](./docs/verification/utilization_capture.png)](./docs/verification/utilization_capture.png)
+
+위 이미지는 Vivado의 Utilization 보고서 화면을 직접 캡처한 것입니다. `redundant_link_core`가 코어 전체 사용량이며, 펼쳐진 하위 행은 각 모듈이 차지하는 자원입니다.
+
+[![Vivado Utilization Summary 실제 표와 사용률 그래프](./docs/verification/utilization_summary_capture.png)](./docs/verification/utilization_summary_capture.png)
+
+Summary 화면의 LUTRAM 404개는 전체 LUT 3,155개에 포함되는 부분집합이므로 두 값을 합산하지 않습니다.
+
 | 자원 | 사용 / 가용 | 사용률 | 비고 |
 |---|---:|---:|---|
 | Slice LUTs | 3,155 / 20,800 | 15.17% | 논리 2,751 + 분산 RAM 404 |
@@ -544,7 +570,11 @@ Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배�
 
 #### 14-2-2. Setup / Hold 타이밍
 
-`scripts/ooc.tcl`은 **합성 전부터 10 ns 클럭 제약을 읽고**, synthesis → opt → place → phys_opt → route 순서로 구현합니다. 아래는 2026-09-08 실행 결과입니다.
+`scripts/ooc.tcl`은 **합성 전부터 10 ns 클럭 제약을 읽고**, synthesis → opt → place → phys_opt → route 순서로 구현합니다. 아래는 해당 구현의 실행 결과입니다.
+
+[![Vivado Design Timing Summary 실제 화면 캡처](./docs/verification/timing_capture.png)](./docs/verification/timing_capture.png)
+
+위 이미지는 같은 구현을 연 Vivado의 **Design Timing Summary** 화면입니다. Setup·Hold·Pulse Width의 slack과 실패 endpoint 수를 도구 화면에서 직접 확인할 수 있습니다.
 
 | 항목 | Slack | Total negative slack | 실패 endpoint |
 |---|---:|---:|---:|
@@ -604,6 +634,15 @@ python3 scripts/verify.py . "$RUN_DIR/sim"
 python3 scripts/plot_waveforms.py "$RUN_DIR/sim/core.vcd" "$RUN_DIR/waveforms"
 vivado -mode batch -source scripts/ooc.tcl -tclargs "$PWD" "$RUN_DIR/ooc"
 ```
+
+실제 보고서 화면은 생성된 `redundant_link_core_routed.dcp`를 Vivado에서 열고 Tcl Console에 다음 명령을 입력해 확인합니다.
+
+```tcl
+report_utilization -name Utilization
+report_timing_summary -name Timing_Summary
+```
+
+Utilization에서는 `Hierarchy`, Timing Summary에서는 `Design Timing Summary` 항목을 선택합니다. README의 캡처는 이 보고서 화면을 사용하며, 표를 이미지로 다시 그린 것이 아닙니다.
 
 | 산출물 | 용도 |
 |---|---|

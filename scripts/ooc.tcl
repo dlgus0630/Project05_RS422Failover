@@ -12,6 +12,7 @@ opt_design
 place_design
 phys_opt_design
 route_design
+write_checkpoint -force $out/redundant_link_core_routed.dcp
 report_timing_summary -report_unconstrained -file $out/timing_summary.rpt
 report_utilization -hierarchical -file $out/utilization_hierarchy.rpt
 report_utilization -file $out/utilization.rpt
