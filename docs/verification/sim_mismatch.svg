@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="499" viewBox="0 0 1280 499">
+<rect width="100%" height="100%" fill="#101b2b"/>
+<style>text{font-family:monospace;fill:#dce6f1;font-size:13px}.title{font-family:sans-serif;font-size:20px;font-weight:bold}</style>
+<text x="24" y="30" class="title">02 / Payload mismatch : reject and raise diagnostic IRQ</text>
+<text x="24" y="52">XSim VCD | accelerated testbench | time : ns | buses : hex</text>
+<path d="M230.0,76 V463" stroke="#293b50"/>
+<text x="230.0" y="485" text-anchor="middle">30785</text>
+<path d="M430.0,76 V463" stroke="#293b50"/>
+<text x="430.0" y="485" text-anchor="middle">30885</text>
+<path d="M630.0,76 V463" stroke="#293b50"/>
+<text x="630.0" y="485" text-anchor="middle">30985</text>
+<path d="M830.0,76 V463" stroke="#293b50"/>
+<text x="830.0" y="485" text-anchor="middle">31085</text>
+<path d="M1030.0,76 V463" stroke="#293b50"/>
+<text x="1030.0" y="485" text-anchor="middle">31185</text>
+<path d="M1230.0,76 V463" stroke="#293b50"/>
+<text x="1230.0" y="485" text-anchor="middle">31285</text>
+<text x="16" y="96">a_crc_ok</text>
+<path d="M230.00,103H350.00V79H370.00V103H1230.00V103" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="144">b_crc_ok</text>
+<path d="M230.00,151H350.00V127H370.00V151H1230.00V151" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="192">decision_valid</text>
+<path d="M230.00,199H430.00V175H450.00V199H1230.00V199" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="240">decision_mismatch_drop</text>
+<path d="M230.00,247H430.00V223H450.00V247H1230.00V247" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="288">decision_accept</text>
+<path d="M230.00,295H1230.00V295" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="336">duplicate_out_valid</text>
+<path d="M230.00,343H1230.00V343" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="384">irq</text>
+<path d="M230.00,391H450.00V367H1230.00V367" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+<text x="16" y="432">rs422_tx_out</text>
+<path d="M230.00,415H1230.00V415" fill="none" stroke="#7bd9ca" stroke-width="2"/>
+</svg>

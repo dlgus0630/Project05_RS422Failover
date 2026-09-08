@@ -44,6 +44,9 @@
 4. [주요 기능](#4-주요-기능)
 5. [시스템 구성](#5-시스템-구성)
 6. [아키텍처](#6-아키텍처)
+   - [MicroBlaze SoC Block Design](#6-1-microblaze-soc-block-design)
+   - [통신 코어 데이터 경로](#6-2-통신-코어-데이터-경로)
+   - [이벤트 관리 경로](#6-3-이벤트-관리-경로)
 7. [프레임과 이벤트 데이터](#7-프레임과-이벤트-데이터)
 8. [AXI4-Lite 인터페이스](#8-axi4-lite-인터페이스)
 9. [핀맵과 상태 표시](#9-핀맵과-상태-표시)
@@ -52,6 +55,11 @@
 12. [핵심 설계 포인트](#12-핵심-설계-포인트)
 13. [Troubleshooting](#13-troubleshooting)
 14. [검증 및 성능 분석](#14-검증-및-성능-분석)
+    - [Self-checking RTL simulation](#14-1-self-checking-rtl-simulation)
+    - [주요 시뮬레이션 파형](#14-1-1-주요-시뮬레이션-파형)
+    - [Timing·자원·성능 분석](#14-2-timing자원성능-분석)
+    - [정적·구조 검증](#14-3-정적구조-검증)
+    - [생성 산출물과 재현 방법](#14-4-생성-산출물과-재현-방법)
 15. [빌드와 소프트웨어 연동](#15-빌드와-소프트웨어-연동)
 
 <br>
@@ -399,7 +407,10 @@ Pair/channel timeout은 AXI에서 설정하고 Parser timeout은 RTL parameter�
 Project04_RS422Failover/
 ├── README.md
 ├── FIX_REPORT.md
-├── docs/rs422_hardware.png        # 실물 구성 사진
+├── docs/
+│   ├── rs422_hardware.png         # 실물 구성 사진
+│   └── verification/             # 실제 VCD 파형, 구현 보고서, 검증 요약
+├── scripts/                      # XSim 회귀 검증, VCD 도식화, OOC 구현
 ├── Project04_RS422Failover.xpr
 ├── Project04_RS422Failover.srcs/
 │   ├── sources_1/
@@ -467,9 +478,11 @@ UART 수신부터 최종 출력까지 RTL이 처리하고 CPU는 설정과 진�
 
 ## 14. 검증 및 성능 분석
 
-### 14-1. RTL 시뮬레이션
+Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배선 결과를 함께 분석합니다. 파형은 실제 XSim VCD에서 생성하며, 자원과 timing 수치는 `redundant_link_core` 단독 **Out-of-Context(OOC)** 구현을 기준으로 합니다. MicroBlaze V·SmartConnect·ILA·local memory를 포함한 전체 SoC 수치와는 구분합니다.
 
-저장된 [검증 보고서](./FIX_REPORT.md)는 Vivado 2024.2에서 Verilog-2005 기준 16개 테스트벤치의 compile·elaboration·simulation PASS를 기록합니다.
+### 14-1. Self-checking RTL simulation
+
+2026-09-08 재실행 결과 : **17 / 17 PASS**. Verilog 소스를 컴파일하고 각 테스트벤치를 독립적으로 elaboration·simulation한 뒤, PASS 메시지와 FAIL/ERROR 부재를 함께 검사합니다. [전체 테스트 결과](./docs/verification/simulation_summary.txt)
 
 | 검증 그룹 | 테스트벤치 |
 |---|---|
@@ -480,25 +493,132 @@ UART 수신부터 최종 출력까지 RTL이 처리하고 CPU는 설정과 진�
 | 버퍼 / 이벤트 | tb_frame_fifo, tb_event_arbiter, tb_event_fifo |
 | 관리 / 표시 | tb_axi_lite_regs, tb_status_display |
 | 코어 통합 | tb_redundant_link_core |
+| 실패 집계 정책 | tb_fail_count_per_transaction |
 
-추가로 `tb_fail_count_per_transaction.v`가 실패 이벤트별 집계 정책을 검사합니다. 이 추가 테스트벤치는 위 보고서의 16개 PASS 집계와 구분합니다.
+검증 범위는 CRC·sequence 판정, pair timeout, failover·복구, FIFO 동시 push/pop, AXI 채널 순서 및 backpressure, IRQ clear 경합, 출력 프레임 변환, FND 선택 채널 갱신을 포함합니다. 기존 [FIX_REPORT](./FIX_REPORT.md)의 16개 테스트에 실패 이벤트 집계 테스트를 포함하여 재검증했습니다.
 
-### 14-2. 코어 OOC 구현 결과
+#### 14-1-1. 주요 시뮬레이션 파형
 
-아래 수치는 `redundant_link_core`의 100 MHz **Out-of-Context 구현**에 대한 기존 검증 기록입니다.
+아래는 `tb_redundant_link_core`의 **0~89,555 ns** 실행 중 주요 구간을 확대한 파형입니다. 축은 실제 시뮬레이터 시간(ns), 버스 값은 16진수입니다.
 
-| 항목 | 결과 |
-|---|---:|
-| Setup WNS | +0.143 ns |
-| Setup TNS | 0.000 ns |
-| Hold WHS | +0.028 ns |
-| Hold THS | 0.000 ns |
-| Timing failing endpoint | 0 |
-| Unrouted / partially routed nets | 0 |
-| DRC error | 0 |
-| 합성 오류 | 0 |
+> 테스트벤치는 `always #5`로 10 ns 클럭을 만들지만, UART 분주를 줄이기 위해 `CLK_FREQ_HZ=1,000,000`, `BAUD_RATE=100,000`을 사용합니다. 따라서 파형의 UART는 10 clocks/bit, 실제 시뮬레이션 시간으로 100 ns/bit입니다. Pair timeout도 50 clocks로 줄였습니다. 이 가속 파형의 지연을 보드 기본 설정의 지연으로 읽으면 안 됩니다.
 
-OOC 내부 register-to-register 경로는 setup/hold 제약을 만족합니다. Board I/O와 CPU를 포함한 전체 SoC bitstream sign-off 수치로 혼용하지 않습니다. OOC 경계 및 도구 경고의 분류는 검증 보고서를 참조합니다.
+**(1) 정상 이중 수신 : 동일 프레임을 한 번만 전달**
+
+![정상 pair 수신과 UART 출력 시작 파형](./docs/verification/sim_normal.svg)
+
+- 10,515 ns에 `decision_valid=1`, `decision_accept=1`, `decision_sequence=10`이 함께 나타납니다.
+- 중복 검사와 출력 프레임 변환을 거쳐 10,625 ns에 TX start bit가 시작됩니다. 판정에서 첫 start bit까지 이 테스트에서는 **110 ns / 11 clocks**입니다.
+- 입력 `A5 5A 05 01 10 10 DE AD ED EB`는 출력 `A5 5A 05 55 A0 10 DE AD 80 0E`로 비교됩니다. ID·CMD 변경과 CRC 재계산까지 10바이트 전체를 자동 검사합니다.
+
+**(2) Payload 불일치 : 양쪽 CRC가 정상이어도 출력 차단**
+
+![불일치 프레임 차단과 IRQ 파형](./docs/verification/sim_mismatch.svg)
+
+30,885 ns에 `decision_mismatch_drop=1`이 발생하지만 `decision_accept=0`이고 출력 UART는 idle을 유지합니다. 테스트벤치는 추가 출력 바이트가 없음을 검사하고, IRQ와 이벤트 코드 `0x0B(DATA_MISMATCH)`를 AXI로 읽어 확인합니다. 정상 CRC만으로 프레임 내용의 일치까지 보장되지는 않으므로 두 조건을 별도로 검사합니다.
+
+**(3) A 채널 CRC 오류 : 정상 B 채널로 fallback**
+
+![CRC 오류 후 정상 B 채널 선택 파형](./docs/verification/sim_fallback.svg)
+
+75,985 ns에 A의 CRC 오류가 검출됩니다. B 프레임은 pair 대기를 거쳐 76,515 ns에 `decision_degraded=1`, `decision_selected_b=1`로 채택됩니다. 출력의 payload `BE EF`와 재계산된 CRC `57 9A`를 검사하여, 오류 A의 payload가 섞이지 않는지 확인합니다.
+
+**(4) 늦게 도착한 동일 프레임 : 이중 실행 방지**
+
+![늦게 도착한 동일 sequence의 중복 차단 파형](./docs/verification/sim_duplicate.svg)
+
+이미 A로 전달한 `SEQ=0x12`가 뒤늦게 B로 도착하면, 선택 단계는 프레임을 채택하더라도 64,405 ns에 `duplicate_drop=1`이 발생합니다. `duplicate_out_valid`는 올라오지 않고 UART 출력도 추가되지 않습니다. **채널 선택과 중복 제거가 서로 다른 단계**임을 보여주는 구간입니다.
+
+### 14-2. Timing·자원·성능 분석
+
+#### 14-2-1. 자원 사용률
+
+100 MHz 제약을 적용한 코어의 route 완료 후 `Report Utilization` 결과입니다. 얕은 프레임 FIFO와 이벤트 FIFO는 분산 RAM으로 구현되므로, 이 코어의 BRAM 사용량과 CPU용 local memory 사용량은 별개입니다.
+
+| 자원 | 사용 / 가용 | 사용률 | 비고 |
+|---|---:|---:|---|
+| Slice LUTs | 3,155 / 20,800 | 15.17% | 논리 2,751 + 분산 RAM 404 |
+| Slice Registers (FF) | 2,933 / 41,600 | 7.05% | latch 0 |
+| Block RAM Tile | 0 / 50 | 0.00% | 코어의 얕은 FIFO는 LUT RAM 사용 |
+| DSP | 0 / 90 | 0.00% | 정수 카운터·비교·CRC 중심 |
+
+코어 기준으로 LUT 약 84.8%, FF 약 93.0%가 남습니다. 전체 SoC에 추가되는 CPU·인터커넥트·디버그 IP·메모리의 비용은 이 여유분에서 별도로 고려해야 합니다. OOC의 `Bonded IOB=0`은 물리 핀이 필요 없다는 뜻이 아니라 I/O buffer를 제외한 합성 방식의 결과입니다. [자원 보고서](./docs/verification/utilization.rpt)
+
+#### 14-2-2. Setup / Hold 타이밍
+
+`scripts/ooc.tcl`은 **합성 전부터 10 ns 클럭 제약을 읽고**, synthesis → opt → place → phys_opt → route 순서로 구현합니다. 아래는 2026-09-08 실행 결과입니다.
+
+| 항목 | Slack | Total negative slack | 실패 endpoint |
+|---|---:|---:|---:|
+| Setup | WNS **+0.204 ns** | TNS 0.000 ns | 0 / 8,350 |
+| Hold | WHS **+0.028 ns** | THS 0.000 ns | 0 / 8,350 |
+| Pulse Width | WPWS **+3.750 ns** | TPWS 0.000 ns | 0 / 3,737 |
+
+제약이 적용된 코어 내부 경로는 100 MHz에서 setup·hold·pulse-width 조건을 만족합니다. Setup 여유는 목표 주기의 약 2.04%로, 충분히 큰 여유라고 단정하기보다는 통합 후 재확인이 필요한 수준으로 해석합니다. [Timing Summary](./docs/verification/timing_summary.rpt)
+
+가장 긴 setup 경로는 `u_event_fifo/count_reg[4]`에서 `u_event_arbiter/event_lost_count_reg[5]`까지입니다. 데이터 경로 지연 9.744 ns 중 로직 3.052 ns(31.3%), 배선 6.692 ns(68.7%)이며 로직 깊이는 14단입니다. 즉 UART 직렬화 자체보다 **이벤트 FIFO 상태에서 유실 카운터로 이어지는 제어 경로**가 timing을 제한합니다. [임계 경로 보고서](./docs/verification/critical_paths.rpt)
+
+OOC에서는 입력 58개·출력 54개에 외부 I/O delay가 적용되지 않았습니다. 이 결과는 내부 경로 검증이며, 보드 I/O와 MicroBlaze SoC 전체의 timing sign-off 또는 실물 동작 측정값으로 사용하지 않습니다. 과거 `FIX_REPORT`의 WNS +0.143 ns는 별도 실행 기록이고, 본 표는 함께 저장한 재현 스크립트의 결과입니다.
+
+#### 14-2-3. 통신 처리량과 장애 응답 시간
+
+다음은 **보드 기본 파라미터에서 계산한 설계 지표**입니다. 위 가속 시뮬레이션의 시간이나 실물 측정값과 구분합니다.
+
+| 항목 | 값 | 해석 |
+|---|---:|---|
+| 기준 클럭 | 100 MHz / 10 ns | RTL 처리 주기 |
+| UART 분주 | 868 clocks/bit | `(100,000,000 + 115,200/2) / 115,200`의 정수 결과 |
+| 실제 분주 baud | 약 115,207.37 bps | 목표 115,200 대비 +0.0064% |
+| UART 8-N-1 byte | 86.8 μs | start 1 + data 8 + stop 1 = 10 bits |
+| 프레임 직렬화 | 694.4 μs~2.0832 ms | 총 8~24 bytes, byte 사이 대기 제외 |
+| 16-byte payload 효율 | 66.7% | payload 16 / frame 24 bytes |
+| 최대 payload 처리량 상한 | 약 7.68 kB/s | 24-byte 프레임을 연속 전송할 때, 추가 간격·대기 제외 |
+| Pair 대기 제한 | 10 ms | 한쪽 프레임만 준비된 상태의 기본 대기 한도 |
+| Channel silence 제한 | 300 ms | 무수신 채널의 alive 해제 기준 |
+| 오류 / 복구 임계값 | 3 / 5 | 실패 이벤트 누적 / 정상 pair 연속 복구 |
+| Event FIFO / 중복 이력 | 16 events / 4 keys | 유한 버퍼, CPU 소비 속도와 입력률 관리 필요 |
+
+두 입력이 동일 명령의 복제본이므로 이중 채널이 출력 대역폭을 두 배로 늘리지는 않습니다. 출력은 하나의 UART이며, 수신 완료·pair 판정·CRC 변환·출력 버퍼 대기·직렬화가 전체 지연을 구성합니다. 단일 채널 fallback에는 pair 대기 시간이 추가됩니다. 위 직렬화 시간과 payload 처리량은 **프로토콜 상한**으로, 종단 간 지연이나 보장 처리량은 아닙니다.
+
+오류 임계값은 트랜잭션 수가 아니라 **실패 이벤트 수**입니다. 예를 들어 CRC 오류와 이후 pair-missing이 같은 트랜잭션에서 각각 집계될 수 있으므로, `3 × 프레임 시간`을 고정 failover 지연으로 해석하지 않습니다.
+
+### 14-3. 정적·구조 검증
+
+| 확인 항목 | 결과 | 근거 |
+|---|---:|---|
+| 합성 latch | 0 | utilization의 Register as Latch |
+| 클럭 미지정 register/latch | 0 | check_timing : no_clock |
+| 미제약 내부 endpoint | 0 | unconstrained_internal_endpoints |
+| 조합 / latch loop | 0 / 0 | check_timing |
+| 배선 완료 | 5,373 / 5,373 nets | routable nets 기준 |
+| 배선 오류 | 0 | route_status |
+| DRC Error | 0 | OOC 기본 DRC 검사 |
+
+DRC에는 OOC의 보드 전압 속성 생략(`CFGBVS-1`)과 외부 부하 생략(`RTSTAT-10`) 경고가 남습니다. 또한 OOC에서는 모든 연결 기반 DRC가 실행되는 것은 아니므로, 전체 SoC 구현 시 보드 XDC·I/O 제약과 함께 검사합니다. 경고를 숨기거나 외부 경로까지 통과한 것으로 확대 해석하지 않습니다.
+
+### 14-4. 생성 산출물과 재현 방법
+
+Vivado 2024.2 실행 파일이 PATH에 등록된 환경에서 저장소 루트 기준으로 실행합니다. Python 스크립트는 표준 라이브러리만 사용합니다.
+
+```bash
+RUN_DIR=$(mktemp -d /tmp/rs422-verify-XXXXXX)
+python3 scripts/verify.py . "$RUN_DIR/sim"
+python3 scripts/plot_waveforms.py "$RUN_DIR/sim/core.vcd" "$RUN_DIR/waveforms"
+vivado -mode batch -source scripts/ooc.tcl -tclargs "$PWD" "$RUN_DIR/ooc"
+```
+
+| 산출물 | 용도 |
+|---|---|
+| [simulation_summary.txt](./docs/verification/simulation_summary.txt) | 17개 테스트 판정 |
+| [core_simulation.txt](./docs/verification/core_simulation.txt) | 통합 테스트 원본 실행 로그 |
+| [core.vcd](./docs/verification/core.vcd) | 실제 파형 원본 |
+| [waveform_events.json](./docs/verification/waveform_events.json) | 도식에 사용한 판정·오류 시각 |
+| [utilization.rpt](./docs/verification/utilization.rpt) | 전체 코어 자원 사용량 |
+| [utilization_hierarchy.rpt](./docs/verification/utilization_hierarchy.rpt) | 모듈별 자원 분포 |
+| [timing_summary.rpt](./docs/verification/timing_summary.rpt) | Setup / Hold / Pulse Width 및 제약 범위 |
+| [critical_paths.rpt](./docs/verification/critical_paths.rpt) | 상위 5개 setup 경로 |
+| [route_status.rpt](./docs/verification/route_status.rpt), [drc.rpt](./docs/verification/drc.rpt) | 배선 완료와 DRC 결과 |
+
 
 <br>
 
