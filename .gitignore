@@ -1,0 +1,31 @@
+# Vivado generated directories
+.Xil/
+*.cache/
+*.gen/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+xsim.dir/
+
+# Vivado generated files
+*.jou
+*.log
+*.str
+*.wdb
+*.wcfg
+*.pb
+*.dcp
+*.bit
+*.bin
+*.ltx
+*.zip
+
+# Local reference bundles (never publish)
+redundant_link_rtl_final/
+redundant_link.srcs/redundant_link_rtl_final/
+
+# Editor/OS files
+*~
+*.swp
+.DS_Store
