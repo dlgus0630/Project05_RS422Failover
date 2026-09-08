@@ -2,7 +2,7 @@
 
 # 📡 Basys 3 고신뢰성 이중화 통신 : RS-422 기반 채널 자동 절체 시스템
 
-### RS-422-Based Automatic Channel Failover System
+### RS-422-Based Automatic Channel Failover System (Team of 3)
 
 <br>
 
