@@ -515,13 +515,13 @@ Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배�
 
 #### 14-1-1. 주요 시뮬레이션 파형
 
-아래는 `tb_redundant_link_core`의 **0~89,555 ns** 실행 중 주요 구간을 확대한 파형입니다. 축은 실제 시뮬레이터 시간(ns), 버스 값은 16진수입니다.
+아래 세 장은 `tb_redundant_link_core`의 **0~89,555 ns** 실행 결과가 기록된 WDB를 XSim GUI에서 다시 열어 대표 구간을 직접 캡처한 것입니다. 노란 cursor는 핵심 판정 시각이며, 이미지를 클릭하면 원본 크기로 확인할 수 있습니다.
 
 > 테스트벤치는 `always #5`로 10 ns 클럭을 만들지만, UART 분주를 줄이기 위해 `CLK_FREQ_HZ=1,000,000`, `BAUD_RATE=100,000`을 사용합니다. 따라서 파형의 UART는 10 clocks/bit, 실제 시뮬레이션 시간으로 100 ns/bit입니다. Pair timeout도 50 clocks로 줄였습니다. 이 가속 파형의 지연을 보드 기본 설정의 지연으로 읽으면 안 됩니다.
 
 **(1) 정상 이중 수신 : 동일 프레임을 한 번만 전달**
 
-![정상 pair 수신과 UART 출력 시작 파형](./docs/verification/sim_normal.svg)
+[![정상 pair 수신과 UART 출력 시작 XSim 캡처](./docs/verification/portfolio_normal_xsim.png)](./docs/verification/portfolio_normal_xsim.png)
 
 - 10,515 ns에 `decision_valid=1`, `decision_accept=1`, `decision_sequence=10`이 함께 나타납니다.
 - 중복 검사와 출력 프레임 변환을 거쳐 10,625 ns에 TX start bit가 시작됩니다. 판정에서 첫 start bit까지 이 테스트에서는 **110 ns / 11 clocks**입니다.
@@ -529,21 +529,15 @@ Vivado 2024.2의 self-checking 시뮬레이션과 통신 코어의 배치·배�
 
 **(2) Payload 불일치 : 양쪽 CRC가 정상이어도 출력 차단**
 
-![불일치 프레임 차단과 IRQ 파형](./docs/verification/sim_mismatch.svg)
+[![불일치 프레임 차단과 IRQ XSim 캡처](./docs/verification/portfolio_mismatch_xsim.png)](./docs/verification/portfolio_mismatch_xsim.png)
 
 30,885 ns에 `decision_mismatch_drop=1`이 발생하지만 `decision_accept=0`이고 출력 UART는 idle을 유지합니다. 테스트벤치는 추가 출력 바이트가 없음을 검사하고, IRQ와 이벤트 코드 `0x0B(DATA_MISMATCH)`를 AXI로 읽어 확인합니다. 정상 CRC만으로 프레임 내용의 일치까지 보장되지는 않으므로 두 조건을 별도로 검사합니다.
 
 **(3) A 채널 CRC 오류 : 정상 B 채널로 fallback**
 
-![CRC 오류 후 정상 B 채널 선택 파형](./docs/verification/sim_fallback.svg)
+[![CRC 오류 후 정상 B 채널 선택 XSim 캡처](./docs/verification/portfolio_failover_xsim.png)](./docs/verification/portfolio_failover_xsim.png)
 
 75,985 ns에 A의 CRC 오류가 검출됩니다. B 프레임은 pair 대기를 거쳐 76,515 ns에 `decision_degraded=1`, `decision_selected_b=1`로 채택됩니다. 출력의 payload `BE EF`와 재계산된 CRC `57 9A`를 검사하여, 오류 A의 payload가 섞이지 않는지 확인합니다.
-
-**(4) 늦게 도착한 동일 프레임 : 이중 실행 방지**
-
-![늦게 도착한 동일 sequence의 중복 차단 파형](./docs/verification/sim_duplicate.svg)
-
-이미 A로 전달한 `SEQ=0x12`가 뒤늦게 B로 도착하면, 선택 단계는 프레임을 채택하더라도 64,405 ns에 `duplicate_drop=1`이 발생합니다. `duplicate_out_valid`는 올라오지 않고 UART 출력도 추가되지 않습니다. **채널 선택과 중복 제거가 서로 다른 단계**임을 보여주는 구간입니다.
 
 ### 14-2. Timing·자원·성능 분석
 
